@@ -1,10 +1,10 @@
 #include "arduinoFFT.h"
 
 // Pin definitions
-#define MIC_ACTIVITY 2  // Digital input from microphone module
-#define MIC_IN 3        // Analog input from microphone module
-#define L_MOTOR 10      // Digital motor control output
-#define R_MOTOR 9       // Digital motor control output
+#define MIC_ACTIVITY D2  // Digital input from microphone module
+#define MIC_IN A3        // Analog input from microphone module
+#define L_MOTOR D10      // Digital motor control output
+#define R_MOTOR D9       // Digital motor control output
 
 // FFT data
 #define SAMPLES 256
