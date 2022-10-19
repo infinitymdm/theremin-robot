@@ -44,15 +44,22 @@ void loop() {
   pixels.clear(); // Turn off the internal LED
   peak = getPeakFrequency();
   Serial.println(peak);
-  pixels.setPixelColor(0, pixels.Color(255,0,0));   // turn the internal LED on RED
+  setRGBColor(255,0,0);   // turn the internal LED on RED
   delay(500);                       // wait for a second
-  pixels.show();
-  pixels.clear(); // Turn off the internal LED
-  pixels.setPixelColor(0, pixels.Color(0,255,0));   // turn the internal LED on GREEN
+  setRGBColor(0,255,0);   // turn the internal LED on GREEN
   delay(500);                       // wait for a second
-  pixels.show();
+  setRGBColor(0,0,255);   // turn the internal LED on BLUE
+  delay(500);                       // wait for a second
+  setRGBColor(255,255,255);   // turn the internal LED on WHITE
+  delay(500);                       // wait for a second
   // Decide which direction to turn based on peak location
   // TODO
+}
+
+void setRGBColor(int R, int G, int B){
+  pixels.clear(); // Turn off the on-board LED
+  pixels.setPixelColor(0, pixels.Color(R,G,B));   // change the on-board LED to the specified color
+  pixels.show();  // Write the color to the RGB LED
 }
 
 double getPeakFrequency() {
