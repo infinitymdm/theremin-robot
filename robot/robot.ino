@@ -17,11 +17,19 @@ double vReal[SAMPLES];
 double vImag[SAMPLES];
 double peak;                    // To hold the peak frequency value of from the FFT to use in calculations and to output to the serial monitor
 
+int TURN_LEFT_FREQ = 2300;  // Hertz. Threshold that the detected frequency must be less than to turn left
+int TURN_RIGHT_FREQ = 2400; // Hertz. Threshold that the detected frequency must be greater than to turn right
+
 // To control on-board RGB LED
 int LED_Power = 11;     // On-board RGB LED
 int LED_PIN = 12;     // On-board RGB LED
 int NUMPIXELS = 1;      // Number of LEDs (Pixels) for the NeoPixel to control
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+// For smoothing the data
+const int numReadings = 10; // value to determine the size of the readings array
+int readings[numReadings];  // the last numReadings readings from the analog input
+int readIndex = 0;          // the index of the current reading
 
 void setup() {
   // Set up pins
@@ -38,22 +46,41 @@ void setup() {
   samplePeriod = round(1000000.0/SAMPLE_FREQ);
 
   digitalWrite(LED_Power, HIGH);  //Allow the on-board RGB LED to be controlled
+
+  // initialize all the smoothing readings to 0:
+  for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+    readings[thisReading] = 0;
+  }
 }
 
 void loop() {
   pixels.clear(); // Turn off the internal LED
   peak = getPeakFrequency();
-  Serial.println(peak);
-  setRGBColor(255,0,0);   // turn the internal LED on RED
-  delay(500);                       // wait for a second
-  setRGBColor(0,255,0);   // turn the internal LED on GREEN
-  delay(500);                       // wait for a second
-  setRGBColor(0,0,255);   // turn the internal LED on BLUE
-  delay(500);                       // wait for a second
-  setRGBColor(255,255,255);   // turn the internal LED on WHITE
-  delay(500);                       // wait for a second
+  //Serial.println(peak);
+  readings[readIndex] = peak; // Add latest peak reading to the array by overwriting the oldest reading
+  readIndex = readIndex + 1;  // advance to the next position in the array:
+  // if we're at the end of the array...
+  if (readIndex >= numReadings) {
+    // ...wrap around to the beginning:
+    readIndex = 0;
+  }
+  int smoothedPeak = calculateSmoothedPeak();
+  Serial.println(smoothedPeak);
   // Decide which direction to turn based on peak location
-  // TODO
+  if (smoothedPeak > TURN_LEFT_FREQ & smoothedPeak < TURN_RIGHT_FREQ)
+    turnLeft();
+  else if (smoothedPeak > TURN_RIGHT_FREQ)
+    turnRight();
+  else
+    goForward();
+}
+
+int calculateSmoothedPeak(){
+  int smoothedPeak = 0;
+  for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+    smoothedPeak = smoothedPeak + readings[thisReading];
+  }
+  return smoothedPeak/numReadings;
 }
 
 void setRGBColor(int R, int G, int B){
@@ -84,25 +111,29 @@ double getPeakFrequency() {
 }
 
 // Turn the left motor and the right motor equally
-void go() {
+void goForward() {
+  setRGBColor(0,0,255);   // set the on-board LED to BLUE
   setLeftMotor(HIGH);
   setRightMotor(HIGH);
 }
 
 // Stop both motors
 void stop() {
+  setRGBColor(255,255,255);   // set the on-board LED to WHITE
   setLeftMotor(LOW);
   setRightMotor(LOW);
 }
 
-// Turn the left motor less than the right motor to turn left
+// Turn the right motor more than the left motor to turn left
 void turnLeft() {
+  setRGBColor(255,0,0);   // set the on-board LED to RED
   setLeftMotor(LOW);
   setRightMotor(HIGH);
 }
 
 // Turn the left motor more than the right motor to turn right
 void turnRight() {
+  setRGBColor(0,255,0);   // set the on-board LED to GREEN
   setRightMotor(LOW);
   setLeftMotor(HIGH);
 }
