@@ -1,6 +1,7 @@
 /*
 // Theremin-Controlled Robot (Frequency Controlled Robot)
-// 
+// Authors: Peter Moyer & Marcus Mellor 
+//
 // Description: This project defines the software portion of a robot that is designed to operate 
 //    on the SEEEDStudio XIAO RP2040. It receives input from a microphone and processes it to 
 //    determine the peak frequency. Peak frequencies are smoothed with an averaging function, 
@@ -25,10 +26,10 @@
 #define SAMPLES 256
 #define SAMPLE_FREQ 12000       // Nyquist Frequency
 arduinoFFT fft = arduinoFFT();
-unsigned int samplePeriod;
-unsigned long sampleStartTime;
-double vReal[SAMPLES];        
-double vImag[SAMPLES];
+unsigned int samplePeriod;      // Delay between samples
+unsigned long sampleStartTime;  // To make the collected samples come at equal, discrete time intervals
+double vReal[SAMPLES];          // To hold the raw analog data from the microphone
+double vImag[SAMPLES];          // To make the FFT happy
 double peak;                    // To hold the peak frequency value of from the FFT to use in calculations and to output to the serial monitor
 
 // Threshold Frequencies to control the robot
