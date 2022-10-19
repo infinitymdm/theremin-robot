@@ -19,23 +19,23 @@ Your task is to choose components for the theremin such that its output varies w
 ### Bill of Materials
 
 #### For the Robot:
-- 1 line follower robot kit (TODO: add link)
-- 1 Seeedstudio XIAO RP2040 (TODO: add link)
-- 1 KY-037 microphone sensor for Arduino (TODO: add link)
+- 1 line follower robot kit (https://www.amazon.com/WHDTS-Soldering-Following-Electronics-Competition/dp/B0732Z1FZC/ref=sr_1_3?keywords=line%2Bfollowing%2Brobot&qid=1663467683&sr=8-3&th=1)
+- 1 Seeedstudio XIAO RP2040 (https://www.seeedstudio.com/XIAO-RP2040-v1-0-p-5026.html)
+- 1 KY-037 microphone sensor for Arduino (https://www.amazon.com/gp/product/B07J6N734S/ref=sw_img_1?smid=A1IU4FC9F8Y7P1&psc=1)
 - 1 2-position DIP switch (TODO: add link)
-- 1 miniature breadboard (TODO: add link)
+- 1 miniature breadboard (https://www.amazon.com/dp/B09G126Y6Y/ref=redir_mobile_desktop?_encoding=UTF8&psc=1&ref_=sspa_mw_detail_1&sp_csd=d2lkZ2V0TmFtZT1zcF9waG9uZV9kZXRhaWwp13NParams)
 - 2 AA batteries
 
 #### For the Theremin: 
 - 1 555 timer (TODO: add link)
 - 1 photoresistor (TODO: add link)
-- 1 piezo speaker (TODO: add link)
+- 1 piezo speaker (https://www.amazon.com/dp/B09L4M84M9/ref=cm_sw_r_apa_i_67V8G85X5KJAQF8PJH90_1?_encoding=UTF8&th=1)
 - 1 9V battery connector (TODO: add link)
 - Resistors
     - TODO: add values and quantities
 - Capacitors
     - TODO: add values and quantities
-- 1 miniature breadboard (TODO: add link)
+- 1 miniature breadboard (https://www.amazon.com/dp/B09G126Y6Y/ref=redir_mobile_desktop?_encoding=UTF8&psc=1&ref_=sspa_mw_detail_1&sp_csd=d2lkZ2V0TmFtZT1zcF9waG9uZV9kZXRhaWwp13NParams)
 - 1 9V battery
 
 #### For both (and your future electronics projects): 
