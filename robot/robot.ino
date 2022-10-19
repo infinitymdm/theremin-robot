@@ -1,4 +1,5 @@
 #include "arduinoFFT.h"
+#include "Adafruit_NeoPixel.h"
 
 // Pin definitions
 #define MIC_ACTIVITY D2  // Digital input from microphone module
@@ -8,34 +9,48 @@
 
 // FFT data
 #define SAMPLES 256
-#define SAMPLE_FREQ 12000
+#define SAMPLE_FREQ 12000       // Nyquist Frequency
 arduinoFFT fft = arduinoFFT();
 unsigned int samplePeriod;
 unsigned long sampleStartTime;
-double vReal[SAMPLES];
+double vReal[SAMPLES];        
 double vImag[SAMPLES];
+double peak;                    // To hold the peak frequency value of from the FFT to use in calculations and to output to the serial monitor
+
+// To control on-board RGB LED
+int LED_Power = 11;     // On-board RGB LED
+int LED_PIN = 12;     // On-board RGB LED
+int NUMPIXELS = 1;      // Number of LEDs (Pixels) for the NeoPixel to control
+Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   // Set up pins
-  pinMode(MIC_IN, INPUT);
-  pinMode(L_MOTOR, OUTPUT);
-  pinMode(R_MOTOR, OUTPUT);
-
-  // Initialize with motors off
-  stop();
+  pinMode(MIC_IN, INPUT);       // initialize microphone pin for analog input
+  pinMode(L_MOTOR, OUTPUT);     // initialize left motor pin
+  pinMode(R_MOTOR, OUTPUT);     // initialize right motor pin
+  pinMode(LED_Power, OUTPUT);   // initialize internal RGB LED pin
+  stop();                       // Initialize with motors off
 
   // Open Serial port for monitoring
   Serial.begin(115200);
 
   // Calculate delay between samples
   samplePeriod = round(1000000.0/SAMPLE_FREQ);
+
+  digitalWrite(LED_Power, HIGH);  //Allow the on-board RGB LED to be controlled
 }
 
-double peak;
 void loop() {
+  pixels.clear(); // Turn off the internal LED
   peak = getPeakFrequency();
   Serial.println(peak);
-
+  pixels.setPixelColor(0, pixels.Color(255,0,0));   // turn the internal LED on RED
+  delay(500);                       // wait for a second
+  pixels.show();
+  pixels.clear(); // Turn off the internal LED
+  pixels.setPixelColor(0, pixels.Color(0,255,0));   // turn the internal LED on GREEN
+  delay(500);                       // wait for a second
+  pixels.show();
   // Decide which direction to turn based on peak location
   // TODO
 }
