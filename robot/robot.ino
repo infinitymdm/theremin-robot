@@ -7,10 +7,8 @@
 //    and then the smoothed peak frequency is used to determine how the robot should drive the
 //    motors to move the robot.
 // 
-// License: This program is free software; you can redistribute it and/or modify it under 
-//    the terms of the GNU General Public License (GPL) version 3, or any later version of your 
-//    choice, as published by the Free Software Foundation.
-
+// License: MIT
+//
 // Thanks to Clyde Lettsome for his post that gave me direction on how to use arduinoFFT
 // https://create.arduino.cc/projecthub/lbf20012001/audio-frequency-detector-617856
 */
