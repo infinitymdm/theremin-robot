@@ -54,8 +54,9 @@ void setup() {
 }
 
 // Threshold Frequencies to control the robot
-int TURN_LEFT_FREQ = 2300;  // Hertz. Threshold that the detected frequency must be less than to turn left
-int TURN_RIGHT_FREQ = 2400; // Hertz. Threshold that the detected frequency must be greater than to turn right
+int TURN_LEFT_FREQ  = 2300; // Hertz. Threshold that the detected frequency must be less than to turn left
+int TURN_RIGHT_FREQ = 2600; // Hertz. Threshold that the detected frequency must be greater than to turn right
+int END_FREQ        = 2900; // Hertz. The robot will use its default behavior for frequencies greater than this threshold value
 double frequency;           // Holds the current measured frequency
 
 void loop() {
@@ -69,13 +70,14 @@ void loop() {
     // ...wrap around to the beginning:
     readIndex = 0;
   }
+  
   frequency = calculateSmoothedPeak();
-  Serial.println(frequency);
+  Serial.println(frequency); // Print the filtered frequency data
 
   // Decide which direction to turn based on smoothed peak frequency
   if (frequency > TURN_LEFT_FREQ & frequency < TURN_RIGHT_FREQ)
     turnLeft();
-  else if (frequency > TURN_RIGHT_FREQ)
+  else if (frequency > TURN_RIGHT_FREQ & frequency < END_FREQ)
     turnRight();
   else
     goForward();
